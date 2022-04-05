@@ -1,34 +1,40 @@
+// query selectors
 const btnstartquiz = document.querySelector("#startquiz")
 const quizsection = document.querySelector(".quizsection")
 const timerEl = document.querySelector('#countdown');
 const frmcodequiz = document.querySelector("#frmcodequiz");
 const userinitialsblock = document.querySelector("#userinitialsblock");
+const highscoresection = document.querySelector("#highscoresection");
 const txtuserinital = document.querySelector("#txtuserinital");
 const btnsubmit = document.querySelector("#btnsubmit");
 const containeruseroptions = document.querySelector("#containeruseroptions");
 
+// global variables
 let timerInterval;
 let quizQuestions;
 let secondsLeft;
 let userselectedanswers = [];
 let userscore;
+
 // Build quiz 
 function buildQuizGame()
 {    
     let toalQuestions = quizQuestions.length;
+    let secondsLeft = 60;
     // append question#1 to form
     addquestiontoform(0);
+    timerEl.textContent = secondsLeft + ' seconds remaining';                      
     // start timer
-    // timerInterval = setInterval(function() {            
-    //     timerEl.textContent = secondsLeft + ' seconds remaining';              
-    //     secondsLeft--;
-    //     if(secondsLeft === 0) {
-    //       // Stops execution of action at set interval
-    //       clearInterval(timerInterval);
-    //       // Calls function to end the game
-    //       endthegame();
-    //     }        
-    // }, 1000);
+    timerInterval = setInterval(function() {            
+        secondsLeft--;
+        timerEl.textContent = secondsLeft + ' seconds remaining';                      
+        if(secondsLeft === 0) {
+          // Stops execution of action at set interval
+          clearInterval(timerInterval);
+          // Calls function to end the game
+          endthegame();
+        }        
+    }, 1000);
 }
 // append questions one by one to frmcodequiz
 function addquestiontoform(index)
@@ -77,7 +83,10 @@ function validateresponse(event)
       if(questionno<(userselectedanswers.length-1))      
       addquestiontoform(++questionno)
       else
-      endthegame();     
+      {
+       clearInterval(timerInterval); // stop timer
+       endthegame();     
+      }
      }, 300);
      
 }
@@ -107,6 +116,7 @@ function endthegame()
     // display section to accept user initials
     userinitialsblock.style.display='block';
 }
+
 // listener for submit button for form user intials
 btnsubmit.addEventListener("click", function(event){
     event.preventDefault();
@@ -119,6 +129,7 @@ btnsubmit.addEventListener("click", function(event){
 function saveuserscore(valuserinitial)
 {
     containeruseroptions.innerHTML='';    // Clear screen 
+    timerEl.textContent = ''; // remove timer status
     // hide section that accept user initials
     userinitialsblock.style.display='none';
     // show highscores
@@ -127,14 +138,22 @@ function saveuserscore(valuserinitial)
     containeruseroptions.append(HeadingEl);
 
     let scoreEl = document.createElement("p");
+    scoreEl.setAttribute("id", "highscore");
     scoreEl.textContent = valuserinitial +" - " + userscore + "%"; 
     containeruseroptions.append(scoreEl);
+    highscoresection.style.display='block';
 }
 // listener for button 'Start Quiz' that will call buildQuizGame
 btnstartquiz.addEventListener("click", function(){
     this.style.display='none'; 
     quizsection.style.display='block';    
     buildQuizGame();
+})
+
+// listener for button 'Clear Highscores' that will clear score
+btnclearhighscore.addEventListener("click", function(event){
+    event.preventDefault();
+    document.querySelector("#highscore").remove();
 })
 
 // fires when the page is loaded 
@@ -155,9 +174,9 @@ function init() {
     {
         question: "What is the correct syntax for referring to an external script called \"xxx.js?\"",
         answers: {
-            a: "<script href='xxx.js'",
-            b: "<script name='xxx.js'",
-            c: "<script src='xxx.js'",
+            a: "<script href='xxx.js'>",
+            b: "<script name='xxx.js'>",
+            c: "<script src='xxx.js'>",
         },
         coorectAnswer: "c"
     },
