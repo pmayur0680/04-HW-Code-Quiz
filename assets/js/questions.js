@@ -12,9 +12,9 @@ const quizQuestions = [
     {
         question: "What is the correct syntax for referring to an external script called \"xxx.js?\"",
         answer: {
-            a: "<script href='xxx.js'",
-            b: "<script name='xxx.js'",
-            c: "<script src='xxx.js'",
+            a: "<script href='xxx.js'>",
+            b: "<script name='xxx.js'>",
+            c: "<script src='xxx.js'>",
         },
         coorectAnswer: "c"
     },

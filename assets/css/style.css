@@ -42,48 +42,27 @@ button {
     margin: 0.6em auto;
     display: block;
 }
+
 h1 {
   text-align: center;
 }
 
-ul {
-  list-style-type: none;
-  padding: 0;
-  background-color: white;
+h2{
+  text-align: left;
 }
-
-li {
-  height: 50px;
-  margin-top: 5px;
-  margin-bottom: 5px;
+ol, li {
+  font-size: 100%;
+  font-weight: bold;
+}
+li{
+  text-align: left;
+  font-weight: bold;
   padding: 5px;
-  background-color:  #001b44;
-  color: white;
-  font-size: 1.5em;
-  line-height: 1.5;
+  cursor: pointer
 }
-
-li:before {
-  content: "\200B";
-  position: absolute;
+li:hover{
+  background-color: yellow;
 }
-
-li::after {
-  content: " ";
-  display: block;
-  clear: both;
-}
-
-li button {
-  float: right;
-  border: none;
-  height: 40px;
-  cursor: pointer;
-  background-color: #ff7034;
-  color: white;
-  font-size: 1em;
-}
-
 .card {
   display: block;
   background-color:	#FFFFE0;
@@ -96,19 +75,16 @@ li button {
   width: 80vw;
 }
 
-section.playarea {
+section.quizsection {
     display: none;
     text-align: center;
 }
 
-#gamestatus {
+#quizstatus {
   margin: 5;
   text-align: center;
 }
 
-#playagain {
-  display: none;
-}
 #countdown {
   text-align: right;
 }
