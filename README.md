@@ -4,8 +4,10 @@ This is a home work done by a student of Coding Boot Camp - University of Texas 
 ## License
 Distributed under the MIT License. See LICENSE.txt for more information.
 ## Contact
-Project Link: 
+Project Link: https://pmayur0680.github.io/04-HW-Code-Quiz/<br><br>
+![Alt text](https://user-images.githubusercontent.com/101486770/161862396-22c5b7ca-f198-4742-ac31-97d70de09fd7.png?raw=true "Web APIs: Code Quiz")
 ## Acknowledgments
- I've included a few of my favorites to get started with JavaScript. 
- - https://www.w3schools.com/js/
- - https://developer.mozilla.org/en-US/docs/Web/JavaScript
+ I've included a few of my favorites to lean Web APIs. 
+ - https://www.w3schools.com/js/js_htmldom.asp
+ - https://developer.mozilla.org/en-US/docs/Web/API
+ - https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model
