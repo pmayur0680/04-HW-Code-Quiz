@@ -5,8 +5,10 @@ const timerEl = document.querySelector('#countdown');
 const frmcodequiz = document.querySelector("#frmcodequiz");
 const userinitialsblock = document.querySelector("#userinitialsblock");
 const highscoresection = document.querySelector("#highscoresection");
+const scorecard = document.querySelector("#scorecard");
 const txtuserinital = document.querySelector("#txtuserinital");
 const btnsubmit = document.querySelector("#btnsubmit");
+const btnclearhighscore = document.querySelector("#btnclearhighscore");
 const containeruseroptions = document.querySelector("#containeruseroptions");
 
 // global variables
@@ -131,17 +133,57 @@ function saveuserscore(valuserinitial)
     containeruseroptions.innerHTML='';    // Clear screen 
     timerEl.textContent = ''; // remove timer status
     // hide section that accept user initials
-    userinitialsblock.style.display='none';
-    // show highscores
+    userinitialsblock.style.display='none';       
+
+    // add player score to localstorages        
+    let scorehistory = JSON.parse(localStorage.getItem("scorehistory"));            
+    if(scorehistory==null)
+    {
+        scorehistory=valuserinitial + "," + userscore;
+    }
+    else
+    {        
+        scorehistory=scorehistory + "|" + valuserinitial + "," + userscore;
+    }
+    localStorage.setItem("scorehistory", JSON.stringify(scorehistory));
+
+    // show high score
+    displayhighscore();    
+}
+
+// function to show scores
+function displayhighscore()
+{
     let HeadingEl = document.createElement("h2");
     HeadingEl.textContent = "Highscores"; 
-    containeruseroptions.append(HeadingEl);
+    scorecard.append(HeadingEl);
 
-    let scoreEl = document.createElement("p");
-    scoreEl.setAttribute("id", "highscore");
-    scoreEl.textContent = valuserinitial +" - " + userscore + "%"; 
-    containeruseroptions.append(scoreEl);
-    highscoresection.style.display='block';
+    let scorehistory = JSON.parse(localStorage.getItem("scorehistory"));         
+    if(scorehistory!=null)
+    {
+        let scorehistoryarray = scorehistory.split("|");                
+        let arrayresult = [];
+        for(let i=0; i<scorehistoryarray.length; i++)
+        {
+            var scorehistoryval = scorehistoryarray[i].split(",");
+            var initials = scorehistoryval[0];
+            var score = parseFloat(scorehistoryval[1]);   
+            var item = {initials: initials, score: score};
+            arrayresult.push(item);         
+        }
+        // sort array by score    //arrayresult.sort((a, b) => (b.score > a.score) ? 1 : -1)
+        arrayresult.sort((a, b) => (b.score > a.score) ? 1 : (a.score === b.score) ? ((a.initials > b.initials) ? 1 : -1) : -1 )
+        let orderlistEl = document.createElement("ol");            
+        for(let i=0; i<arrayresult.length; i++)
+        {
+            console.log(arrayresult[i].initials)
+            var liEl = document.createElement("li");
+            liEl.textContent=arrayresult[i].initials + " - " + arrayresult[i].score +"%";            
+            orderlistEl.append(liEl);            
+        }
+         scorecard.append(orderlistEl);            
+    }
+    highscoresection.style.display='block';    
 }
 // listener for button 'Start Quiz' that will call buildQuizGame
 btnstartquiz.addEventListener("click", function(){
@@ -153,13 +195,15 @@ btnstartquiz.addEventListener("click", function(){
 // listener for button 'Clear Highscores' that will clear score
 btnclearhighscore.addEventListener("click", function(event){
     event.preventDefault();
-    document.querySelector("#highscore").remove();
+    scorecard.textContent='';
+    localStorage.removeItem("scorehistory");
 })
 
 // fires when the page is loaded 
 function init() {  
 
   secondsLeft = 10*60; // 10 minutes to answer all questions
+  
     // Array will hold questions, answers, and correct answer objects
   quizQuestions = [
     {
@@ -201,6 +245,6 @@ function init() {
 ];
  // create empty array for user answers that will replace as user answer each questions
  for(let i=0; i< quizQuestions.length; i++)
- userselectedanswers.push('');
+ userselectedanswers.push(''); 
 }    
 init();
