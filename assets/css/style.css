@@ -4,25 +4,12 @@
   box-sizing: border-box;
 }
 
+/* Element selectors */
+
 body {
   font-family: "Roboto", sans-serif;
   background-color: #eff5f8;
   color: #001b44;
-}
-
-label, p {
-  font-size: 30px;
-}
-
-input {
-  height: 50px;
-  width: 5%;
-  padding: 6px;
-  margin: 10px 4px;
-  font-size: 3em;  
-  text-align: center;;
-  border-width: 0 0 2px;
-  border-color: #001b44;
 }
 
 button {
@@ -47,22 +34,24 @@ h1 {
   text-align: center;
 }
 
-h2{
-  text-align: left;
-}
 ol, li {
   font-size: 100%;
   font-weight: bold;
 }
+
 li{
   text-align: left;
   font-weight: bold;
   padding: 5px;
   cursor: pointer
 }
+
 li:hover{
-  background-color: yellow;
+  background-color: yellow;  
 }
+
+/* Class selectors */
+
 .card {
   display: block;
   background-color:	#FFFFE0;
@@ -77,12 +66,13 @@ li:hover{
 
 section.quizsection {
     display: none;
-    text-align: center;
 }
 
-#quizstatus {
+/* Id Selectors */
+
+#userinitialsblock {
   margin: 5;
-  text-align: center;
+  display: none;
 }
 
 #countdown {

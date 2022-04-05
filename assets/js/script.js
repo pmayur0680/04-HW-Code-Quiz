@@ -2,13 +2,16 @@ const btnstartquiz = document.querySelector("#startquiz")
 const quizsection = document.querySelector(".quizsection")
 const timerEl = document.querySelector('#countdown');
 const frmcodequiz = document.querySelector("#frmcodequiz");
+const userinitialsblock = document.querySelector("#userinitialsblock");
+const txtuserinital = document.querySelector("#txtuserinital");
+const btnsubmit = document.querySelector("#btnsubmit");
 const containeruseroptions = document.querySelector("#containeruseroptions");
 
 let timerInterval;
 let quizQuestions;
 let secondsLeft;
 let userselectedanswers = [];
-
+let userscore;
 // Build quiz 
 function buildQuizGame()
 {    
@@ -59,24 +62,78 @@ function validateresponse(event)
      let questionno = indexpluskey[0];
      let useranswer = indexpluskey[1];
      userselectedanswers[questionno] = useranswer;
-     
-     // check if questions left move to next or end game
+     // add hr and correct/wrong answer status
+     let hrEl = document.createElement("hr");
+     containeruseroptions.append(hrEl);    
+     let divEl = document.createElement("div");
+     if(useranswer==quizQuestions[questionno].coorectAnswer)
+     divEl.textContent = "Correct!";        
+     else
+     divEl.textContent = "Wrong!";        
+     containeruseroptions.append(divEl);   
+     // timeout so user will have time to see correct/wrong answer status
+     setTimeout(function(){
+         // check if questions left move to next or end game
       if(questionno<(userselectedanswers.length-1))      
       addquestiontoform(++questionno)
       else
       endthegame();     
+     }, 300);
+     
 }
 
-// end the game by
+// end the game by calculating score and asking for user intials
 function endthegame()
 {
     containeruseroptions.innerHTML='';    // Clear screen 
-}
+    // find total correct answers
+    let totalquestions = quizQuestions.length;
+    let correctanswers = 0;
+    for(let i=0; i< totalquestions; i++)
+    {
+        if(userselectedanswers[i]==quizQuestions[i].coorectAnswer)
+        correctanswers++;
+    }
+    // find score percentage
+    userscore = (correctanswers/totalquestions)*100;
 
-// listener for button Start Quiz that will build the quiz
+    let HeadingEl = document.createElement("h2");
+    HeadingEl.textContent = "All done!"; 
+    containeruseroptions.append(HeadingEl);
+
+    let scoreEl = document.createElement("p");
+    scoreEl.textContent = "Your final score is "+userscore+"%."; 
+    containeruseroptions.append(scoreEl);
+    // display section to accept user initials
+    userinitialsblock.style.display='block';
+}
+// listener for submit button for form user intials
+btnsubmit.addEventListener("click", function(event){
+    event.preventDefault();
+    if(txtuserinital.value=="")
+    alert("Please enter your initals!");
+    else
+    saveuserscore(txtuserinital.value);
+})
+// show user initials and score 
+function saveuserscore(valuserinitial)
+{
+    containeruseroptions.innerHTML='';    // Clear screen 
+    // hide section that accept user initials
+    userinitialsblock.style.display='none';
+    // show highscores
+    let HeadingEl = document.createElement("h2");
+    HeadingEl.textContent = "Highscores"; 
+    containeruseroptions.append(HeadingEl);
+
+    let scoreEl = document.createElement("p");
+    scoreEl.textContent = valuserinitial +" - " + userscore + "%"; 
+    containeruseroptions.append(scoreEl);
+}
+// listener for button 'Start Quiz' that will call buildQuizGame
 btnstartquiz.addEventListener("click", function(){
     this.style.display='none'; 
-    quizsection.style.display='block';
+    quizsection.style.display='block';    
     buildQuizGame();
 })
 
@@ -84,7 +141,7 @@ btnstartquiz.addEventListener("click", function(){
 function init() {  
 
   secondsLeft = 10*60; // 10 minutes to answer all questions
-    // Array will hold questions, answers, and correct answer
+    // Array will hold questions, answers, and correct answer objects
   quizQuestions = [
     {
         question: "Inside which HTML element do we put the JavaScript?",
